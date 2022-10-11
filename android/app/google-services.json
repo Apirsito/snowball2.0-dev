@@ -1,0 +1,83 @@
+{
+  "project_info": {
+    "project_number": "504283891171",
+    "firebase_url": "https://snowballapp-84bc6.firebaseio.com",
+    "project_id": "snowballapp-84bc6",
+    "storage_bucket": "snowballapp-84bc6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:504283891171:android:1a83dc754011ccf9ef8cd6",
+        "android_client_info": {
+          "package_name": "co.com.choky.snowball"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "504283891171-vdngji3c0ags2iivsdc4826amr5skan7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCf05OPdarzUz2N3a7uSxK5_9Xgkyd8HEI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "504283891171-vdngji3c0ags2iivsdc4826amr5skan7.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "504283891171-ldr3fumn1d2fh582s1s8iq3i98i1t7lo.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "co.com.choky.snowball"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:504283891171:android:e21c27531867290fef8cd6",
+        "android_client_info": {
+          "package_name": "com.choky.snowball"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "504283891171-vdngji3c0ags2iivsdc4826amr5skan7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCf05OPdarzUz2N3a7uSxK5_9Xgkyd8HEI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "504283891171-vdngji3c0ags2iivsdc4826amr5skan7.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "504283891171-ldr3fumn1d2fh582s1s8iq3i98i1t7lo.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "co.com.choky.snowball"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>CFBundleExecutable</key>
+	<string>$(EXECUTABLE_NAME)</string>
+	<key>CFBundleIdentifier</key>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>snowball</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>$(MARKETING_VERSION)</string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>co.com.choky.snowball</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.504283891171-ldr3fumn1d2fh582s1s8iq3i98i1t7lo</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>fb674547539749021s</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>choky</string>
+			</array>
+		</dict>
+	</array>
+	<key>CFBundleVersion</key>
+	<string>33</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
+	<key>LSRequiresIPhoneOS</key>
+	<true/>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
+  <key>NSContactsUsageDescription</key>
+	<string>Access to contacts is required for the user to actively select and share information with you friends</string>
+  <key>NSCalendarsUsageDescription</key>
+	<string>Access to calendar is required for the user to use the app</string>
+  <key>NSAppleMusicUsageDescription</key>
+	<string>Access to apple music is required for the user to use the app</string>
+  <key>NSMotionUsageDescription</key>
+	<string>Access to motion is required for the user to use the app</string>
+  <key>NSSpeechRecognitionUsageDescription</key>
+	<string>Access to speedch recognition is required for the user to use the app</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Access to camera roll is required for the user to actively select images or videos from their device and upload them to the application</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Providing access to GPS will allow the app to locate and show those entries in a map.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>GPS access is needed for location and display  can check what snowball entries were created around current or specific locations. </string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>GPS access is needed for location and display  can check what snowball entries were created around current or specific locations. Providing access to GPS will allow the app to locate and show those entries in a map.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>This app needs access to microphone when open.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>access to camera roll is required for the user to actively select images or videos from their device and upload them to the application</string>
+	<key>UILaunchStoryboardName</key>
+	<string>LaunchScreen</string>
+	<key>UIMainStoryboardFile</key>
+	<string>Main</string>
+	<key>UISupportedInterfaceOrientations</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationLandscapeRight</string>
+	</array>
+	<key>UISupportedInterfaceOrientations~ipad</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+		<string>UIInterfaceOrientationPortraitUpsideDown</string>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationLandscapeRight</string>
+	</array>
+	<key>UIViewControllerBasedStatusBarAppearance</key>
+	<false/>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+    <key>NSAllowsArbitraryLoads</key>
+    <true/>
+	</dict>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>https</string>
+		<string>http</string>
+		<string>tel</string>
+		<string>mailto</string>
+	</array> 
+</dict>
+</plist>

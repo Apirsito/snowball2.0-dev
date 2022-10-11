@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Snowball</string> 
+    <string name="facebook_app_id">674547539749021</string>
+    <string name="fb_login_protocol_scheme">fb674547539749021</string>
+    <string name="google_key">AIzaSyDDTfAO6lPcVJzyaFVFE5eLmgn9kAhVch8</string>
+</resources>
