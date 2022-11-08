@@ -94,28 +94,27 @@ class _HomeViewState extends State<HomeView>
                   return Card(
                     elevation: 1,
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)),
+                        borderRadius: BorderRadius.circular(10)
+                    ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Stack(
                           children: [
                             InkWell(
-                              onTap: () =>
-                                  Get.to(DetailSnowballView(snowball.id)),
+                              onTap: () => Get.to(DetailSnowballView(snowball.id)),
                               child: snowball.adjuntos.length > 0
                                   ? snowball.adjuntos.first.video != null
                                       ? Center(
                                           child: CustomVideo(
-                                              urlVideo: snowball
-                                                  .adjuntos.first.video))
+                                              urlVideo: snowball.adjuntos.first.video
+                                            )
+                                        )
                                       : Center(
                                           child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(8.0),
+                                          borderRadius: BorderRadius.circular(8.0),
                                           child: FadeInImage.assetNetwork(
-                                            placeholder:
-                                                'assets/snowball_logo.png',
+                                            placeholder: 'assets/snowball_logo.png',
                                             height: 250,
                                             image: snowball.adjuntos[0].image !=
                                                     null

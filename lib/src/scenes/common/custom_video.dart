@@ -26,28 +26,27 @@ class _CustomVideoState extends State<CustomVideo> {
   VideoPlayerController _videoPlayerController;
   ChewieController _chewieController;
 
-
   @override
   Widget build(BuildContext context) {
-        return _videoPlayerController.value.initialized
-            ? SizedBox(
-                height: identifySize(),
-                child: Chewie(controller: _chewieController),
-              )
-            : AspectRatio(
-                aspectRatio: _videoPlayerController.value.aspectRatio,
-                child: Stack(
-                  alignment: Alignment.bottomCenter,
-                  children: <Widget>[
-                    VideoPlayer(_videoPlayerController),
-                    _PlayPauseOverlay(controller: _videoPlayerController),
-                    VideoProgressIndicator(
-                      _videoPlayerController,
-                      allowScrubbing: true,
-                    ),
-                  ],
-                ),
-              );
+    return _videoPlayerController.value.initialized
+    ? SizedBox(
+        height: identifySize(),
+        child: Chewie(controller: _chewieController),
+      )
+    : AspectRatio(
+        aspectRatio: _videoPlayerController.value.aspectRatio,
+        child: Stack(
+          alignment: Alignment.bottomCenter,
+          children: <Widget>[
+            VideoPlayer(_videoPlayerController),
+            _PlayPauseOverlay(controller: _videoPlayerController),
+            VideoProgressIndicator(
+              _videoPlayerController,
+              allowScrubbing: false,
+            ),
+          ],
+        ),
+      );
   }
 
   @override
@@ -83,17 +82,7 @@ class _CustomVideoState extends State<CustomVideo> {
       }
     }
 
- initVideoPlayer();
-
-//    _chewieController = ChewieController(
-//      videoPlayerController: _videoPlayerController,
-//      aspectRatio: _videoPlayerController.value.aspectRatio,
-//      looping: true,
-//      allowedScreenSleep: false,
-//      placeholder: Container(
-//        color: Colors.grey,
-//      ),
-//    );
+    initVideoPlayer();
   }
 
   Future<void> initVideoPlayer() async {
@@ -133,9 +122,9 @@ class _PlayPauseOverlay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-return Stack(
-children: <Widget>[
-    controller.value.isPlaying
+    return Stack(
+      children: <Widget>[
+        controller.value.isPlaying
         ? SizedBox.shrink()
         : Container(
             color: Colors.black,
@@ -147,14 +136,13 @@ children: <Widget>[
               ),
             ),
           ),
-  GestureDetector(
-    onTap: () {
-      controller.value.isPlaying ? controller.pause() : controller.play();
-    },
-  ),
-],
+        GestureDetector(
+          onTap: () {
+            controller.value.isPlaying ? controller.pause() : controller.play();
+          },
+        ),
+      ],
     );
-
 
   }
 }
