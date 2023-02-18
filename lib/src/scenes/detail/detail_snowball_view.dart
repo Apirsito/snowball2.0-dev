@@ -20,8 +20,6 @@ class DetailSnowballView extends StatefulWidget {
 }
 
 class _DetailSnowballViewState extends State<DetailSnowballView> {
-
-
   void showSnowballInTheMap(BuildContext context, DetailSnowballController controller) {
     showModalBottomSheet(
       context: context,
@@ -108,13 +106,15 @@ class _DetailSnowballViewState extends State<DetailSnowballView> {
         centerTitle: true,
         flexibleSpace: Container(
           decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: <Color>[
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: <Color>[
                 AppConstants.blue,
                 Color.fromRGBO(82, 173, 187, 1)
-              ])),
+              ]
+            )
+          ),
         ),
         title: Text(
           'detail'.tr,
@@ -128,295 +128,291 @@ class _DetailSnowballViewState extends State<DetailSnowballView> {
           dispose: (state) => DetailSnowballController.to.clearData(),
           builder: (controller) => Obx(
             () => controller.loading.value
-                ? Center(child: CircularProgressIndicator())
-                : Stack(
+            ? Center(child: CircularProgressIndicator())
+            : Stack(
+                children: [
+                  ListView(
                     children: [
-                      ListView.builder(
-                        padding: const EdgeInsets.only(
-                          top: 20,
-                          bottom: 0,
-                          right: 16,
-                          left: 16,
-                        ),
-                        itemCount: controller.resources.length,
-                        itemBuilder: (context, index) {
-                          final item = controller.resources[index];
+                      Container(
+                        height: 400,
+                        child: Stack(
+                          children: [
+                            PageView.builder(
+                              itemCount: controller.resources.length,
+                              itemBuilder: (context, index) {
+                                final item = controller.resources[index];
+                                if (item.image != null) {
+                                  return InkWell(
+                                    onTap: () => Get.to(
+                                      ImageZoomView(controller.resources)
+                                    ),
+                                    child: Center(
+                                      child: CachedNetworkImage(
+                                        imageUrl: item.image,
+                                        progressIndicatorBuilder: (
+                                          context,
+                                          url, downloadProgress
+                                        ) => CircularProgressIndicator(
+                                          value: downloadProgress.progress,
+                                        ),
+                                        errorWidget: (context, url, error) => Icon(Icons.error),
+                                      ),
+                                    ),
+                                  );
+                                } else if (item.video != null) {
+                                  return CustomVideo(urlVideo: item.video);
+                                } else {
+                                  return Image.asset(
+                                    "assets/snowball_logo.png",
+                                    width: 300,
+                                  );
+                                }
+                              },
+                              onPageChanged: (value) => controller.changePage(value),
+                            ),
 
-                          return Column(
-                            children: [
-                              Container(
-                                height: 400,
-                                child: Stack(
-                                  children: [
-                                    Container(
-                                      child: ( () {
-                                        if (item.image != null) {
-                                          return InkWell(
-                                            onTap: () => Get.to(ImageZoomView(controller.resources)),
-                                            child: Center(
-                                              child: CachedNetworkImage(
-                                                imageUrl: item.image,
-                                                progressIndicatorBuilder: (context, url, downloadProgress) =>
-                                                  CircularProgressIndicator(
-                                                    value: downloadProgress.progress,
-                                                  ),
-                                                errorWidget: (context, url, error) => Icon(Icons.error),
-                                              ),
-                                            ),
-                                          );
-                                        } else if (item.video != null) {
-                                          return CustomVideo(urlVideo: item.video);
-                                        } else {
-                                          return Image.asset(
-                                            "assets/snowball_logo.png",
-                                            width: 300,
-                                          );
-                                        }
-                                      } ()),
-                                    ),
-                                    Positioned(
-                                      bottom: 0,
-                                      left: 0,
-                                      right: 0,
-                                      child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          children: List<Widget>.generate(
-                                            controller.resources.length, (index) {
-                                            return Container(
-                                              width: 15,
-                                              child: Center(
-                                                child: Material(
-                                                  color: controller.page.value == index
-                                                    ? Colors.grey
-                                                    : Colors.black54,
-                                                  type: MaterialType.circle,
-                                                  child: Container(
-                                                    width: 8,
-                                                    height: 8,
-                                                    child: InkWell(
-                                                      onTap: () => print("Next"),
-                                                    ),
-                                                  ),
-                                                )
-                                              ),
-                                            );
-                                          })
-                                      )
-                                    ),
-                                    Positioned(
-                                      bottom: 5,
-                                      right: 5,
-                                      child: controller.resources.length > 1
-                                      ? Container(
-                                          decoration: BoxDecoration(
-                                            color: Colors.black45,
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(30)
-                                            )
-                                          ),
-                                          child: Padding(
-                                            padding: EdgeInsets.symmetric(vertical: 5, horizontal: 8),
-                                            child: Row(
-                                              children: <Widget>[
-                                                Text(
-                                                  "${controller.page.value + 1}/${controller.resources.length}",
-                                                  style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 12
-                                                  ),
-                                                ),
-                                              ],
+                            Positioned(
+                              bottom: 0,
+                              left: 0,
+                              right: 0,
+                              child: Row(
+                                mainAxisAlignment:MainAxisAlignment.center,
+                                children: List<Widget>.generate(
+                                  controller.resources.length,
+                                  (index) {
+                                    return Container(
+                                      width: 15,
+                                      child: Center(
+                                        child: Material(
+                                          color:
+                                          controller.page.value == index
+                                            ? Colors.grey
+                                            : Colors.black54,
+                                          type: MaterialType.circle,
+                                          child: Container(
+                                            width: 8,
+                                            height: 8,
+                                            child: InkWell(
+                                              onTap: () => print("Next"),
                                             ),
                                           ),
                                         )
-                                      : SizedBox()
+                                      ),
+                                    );
+                                  }
+                                )
+                              )
+                            ),
+
+                            Positioned(
+                              bottom: 5,
+                              right: 5,
+                              child: controller.resources.length > 1
+                              ? Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.black45,
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(30)
+                                    )
+                                  ),
+                                  child: Padding(
+                                    padding: EdgeInsets.symmetric(
+                                      vertical: 5,
+                                      horizontal: 8
                                     ),
-                                  ],
-                                ),
-                              ),
-
-                              Container(
-                                margin: EdgeInsets.only(top: 15),
-                                child: Row(
-                                  children: [
-                                    Expanded(
-                                      child: ListTile(
-                                      leading: InkWell(
-                                        onTap: () => Get.to(UserView(id: controller.autor.value.id)),
-                                        child: ClipOval(
-                                          child: FadeInImage.assetNetwork(
-                                            placeholder: "assets/snowball_logo.png",
-                                            image: controller.autor.value.image,
-                                            height: 55,
-                                            width: 55,
-                                            fit: BoxFit.cover,
-                                          ),
-                                        )
-                                      ),
-                                      title: Text(
-                                        controller.autor.value.name == null
-                                            ? "Anonimo"
-                                            : controller.autor.value.name,
-                                        style: TextStyle(
-                                            fontSize: 17,
-                                            fontWeight: FontWeight.w500
-                                        ),
-                                      ),
-                                      trailing: controller.mySnowball.value
-                                          ? IconButton(
-                                              onPressed: () async {
-                                                await controller.gotoEdit();
-                                              },
-                                              icon: Icon(Icons.edit),
-                                            )
-                                          : IconButton(
-                                              onPressed: () =>
-                                                ModalsView.showSnowballOptions(
-                                                    controller,
-                                                    controller.snowball.value.autor,
-                                                    context
-                                                ),
-                                              icon: Icon(Icons.more_horiz),
-                                            ),
-                                    )),
-                                  ],
-                                ),
-                              ),
-
-                              Container(
-                                margin: EdgeInsets.only( top: 15 ),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    Flexible(
-                                      flex: 1,
-                                      child: Padding(
-                                        padding: EdgeInsets.only(
-                                          top: 2,
-                                          bottom: 10,
-                                          left: 20
-                                        ),
-                                        child: Text(
-                                          controller.snowball.value.nombre,
+                                    child: Row(
+                                      children: <Widget>[
+                                        Text(
+                                          "${controller.page.value + 1}/${controller.resources.length}",
                                           style: TextStyle(
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: 17
+                                            color: Colors.white,
+                                            fontSize: 12
                                           ),
                                         ),
-                                      ),
+                                      ],
                                     ),
-
-                                    controller.snowball.value.position.latitude != null ? 
-                                    MaterialButton(
-                                      color: Colors.transparent,
-                                      elevation: 0,
-                                      highlightElevation: 0,
-                                      highlightColor: Colors.white,
-                                      onPressed: () => showSnowballInTheMap(context, controller),
-                                      child: IconButton(
-                                        icon: Image.asset("assets/icon_maps.png", width: 20),
-                                        onPressed: () => showSnowballInTheMap(context, controller),
-                                      ),
-                                    ) : null
-                                  ],
-                                ),
-                              ),
-
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 20,
-                                  vertical: 10
-                                ),
-                                child: Container(
-                                  height: 1,
-                                  width: Get.width,
-                                  color: Colors.black26,
-                                ),
-                              ),
-
-                              Container(
-                                color: Colors.white,
-                                child: ToolsSnowBalls(
-                                  id: controller.snowball.value.id
+                                  ),
                                 )
-                              ),
-
-                              Padding(
-                                padding: EdgeInsets.all(10),
-                                child: ComentariosView(
-                                  controller.snowball.value.id,
-                                  controller.snowball.value.autor
-                                )
-                              ),
-
-                              SizedBox(height: 50),
-                            ],
-                          );
-                        }
-                      ),
-                      Positioned(
-                        bottom: 0,
-                        left: 0,
-                        right: 0,
-                        // child: SafeArea(
-                        // bottom: true,
-                        child: Container(
-                          decoration: BoxDecoration(color: Colors.white),
-                          child: Row(
-                            children: <Widget>[
-                              Material(
-                                child: new Container(
-                                  margin:
-                                      new EdgeInsets.symmetric(horizontal: 1.0),
-                                  child: new IconButton(
-                                    onPressed: () => print("object"),
-                                    icon: new Icon(Icons.face),
-                                    color: Colors.grey,
-                                  ),
-                                ),
-                                color: Colors.white,
-                              ),
-                              Flexible(
-                                child: Container(
-                                  color: Colors.white,
-                                  alignment: Alignment.center,
-                                  height: 50,
-                                  child: TextField(
-                                    maxLines: null,
-                                    keyboardType: TextInputType.multiline,
-                                    style: TextStyle(
-                                        color: Colors.black54, fontSize: 15.0),
-                                    controller: controller.comments,
-                                    decoration: InputDecoration.collapsed(
-                                      hintText: 'your_comments'.tr,
-                                      hintStyle: TextStyle(color: Colors.grey),
-                                    ),
-                                    onSubmitted: (value) =>
-                                        controller.sendOtherComment(),
-                                    focusNode: controller.focusNode,
-                                  ),
-                                ),
-                              ),
-                              Material(
-                                child: new Container(
-                                  margin:
-                                      new EdgeInsets.symmetric(horizontal: 8.0),
-                                  child: new IconButton(
-                                    icon: new Icon(Icons.send),
-                                    onPressed: () =>
-                                        controller.sendOtherComment(),
-                                    color: AppConstants.darBlue,
-                                  ),
-                                ),
-                                color: Colors.white,
-                              ),
-                            ],
-                          ),
+                              : SizedBox()
+                            ),
+                          ],
                         ),
-                        // ),
-                      )
+                      ),
+
+                      Container(
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: ListTile(
+                                leading: InkWell(
+                                  onTap: () => Get.to(
+                                    UserView(
+                                      id: controller.autor.value.id
+                                    )
+                                  ),
+                                  child: ClipOval(
+                                    child: FadeInImage.assetNetwork(
+                                      placeholder: "assets/snowball_logo.png",
+                                      image: controller.autor.value.image,
+                                      height: 55,
+                                      width: 55,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  )
+                                ),
+                                title: Text(
+                                  controller.autor.value.name == null
+                                  ? "Anonimo"
+                                  : controller.autor.value.name,
+                                  style: TextStyle(
+                                    fontSize: 17,
+                                    fontWeight: FontWeight.w500
+                                  ),
+                                ),
+                                trailing: controller.mySnowball.value
+                                ? IconButton(
+                                    onPressed: () async {
+                                      await controller.gotoEdit();
+                                    },
+                                    icon: Icon(Icons.edit),
+                                  )
+                                : IconButton(
+                                    onPressed: () =>
+                                    ModalsView.showSnowballOptions(
+                                      controller,
+                                      controller.snowball.value.autor,
+                                      context
+                                    ),
+                                    icon: Icon(Icons.more_horiz),
+                                  ),
+                              )
+                            ),
+                          ],
+                        ),
+                      ),
+
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 20,
+                          vertical: 10
+                        ),
+                        child: Container(
+                          height: 1,
+                          width: Get.width,
+                          color: Colors.black26,
+                        ),
+                      ),
+
+                      Container(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Flexible(
+                              flex: 1,
+                              child: Padding(
+                                padding: EdgeInsets.only(
+                                  top: 2,
+                                  bottom: 10,
+                                  left: 20
+                                ),
+                                child: Text(
+                                  controller.snowball.value.nombre,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 17
+                                  ),
+                                ),
+                              ),
+                            ),
+                            controller.snowball.value.position.latitude != null ?
+                            MaterialButton(
+                              color: Colors.transparent,
+                              elevation: 0,
+                              highlightElevation: 0,
+                              highlightColor: Colors.white,
+                              onPressed: () => showSnowballInTheMap(context, controller),
+                              child: IconButton(
+                                icon: Image.asset("assets/icon_maps.png", width: 20),
+                                onPressed: () => showSnowballInTheMap(context, controller),
+                              ),
+                            ) : null
+                          ],
+                        ),
+                      ),
+
+                      Container(
+                        color: Colors.white,
+                        child: ToolsSnowBalls( id: controller.snowball.value.id )
+                      ),
+
+                      Padding(
+                        padding: EdgeInsets.all(10),
+                        child: ComentariosView(
+                          controller.snowball.value.id,
+                          controller.snowball.value.autor
+                        )
+                      ),
+
+                      SizedBox(height: 50),
                     ],
                   ),
+
+                  Positioned(
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    child: Container(
+                      decoration: BoxDecoration(color: Colors.white),
+                      child: Row(
+                        children: <Widget>[
+                          Material(
+                            child: new Container(
+                              margin: new EdgeInsets.symmetric(horizontal: 1.0),
+                              child: new IconButton(
+                                onPressed: () => print("object"),
+                                icon: new Icon(Icons.face),
+                                color: Colors.grey,
+                              ),
+                            ),
+                            color: Colors.white,
+                          ),
+                          Flexible(
+                            child: Container(
+                              color: Colors.white,
+                              alignment: Alignment.center,
+                              height: 50,
+                              child: TextField(
+                                maxLines: null,
+                                keyboardType: TextInputType.multiline,
+                                style: TextStyle(color: Colors.black54, fontSize: 15.0),
+                                controller: controller.comments,
+                                decoration: InputDecoration.collapsed(
+                                  hintText: 'your_comments'.tr,
+                                  hintStyle: TextStyle(color: Colors.grey),
+                                ),
+                                onSubmitted: (value) => controller.sendOtherComment(),
+                                focusNode: controller.focusNode,
+                              ),
+                            ),
+                          ),
+                          Material(
+                            child: new Container(
+                              margin: new EdgeInsets.symmetric(horizontal: 8.0),
+                              child: new IconButton(
+                                icon: new Icon(Icons.send),
+                                onPressed: () => controller.sendOtherComment(),
+                                color: AppConstants.darBlue,
+                              ),
+                            ),
+                            color: Colors.white,
+                          ),
+                        ],
+                      ),
+                    ),
+                    // ),
+                  )
+                ],
+              ),
           ),
         ),
       ),
