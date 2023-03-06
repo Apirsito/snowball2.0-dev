@@ -26,8 +26,7 @@ class _MapsLocationViewState extends State<MapsLocationView> {
   final geo = Geoflutterfire();
   final _db = FirebaseFirestore.instance.collection("snowball");
   MapsController controller = Get.put(MapsController());
-  CameraPosition initialPosition =
-      CameraPosition(target: LatLng(28.481151, -81.4388778), zoom: 12);
+  CameraPosition initialPosition = CameraPosition(target: LatLng(28.481151, -81.4388778), zoom: 12);
   Set<Marker> markers = Set<Marker>();
   List<ClusterItem<Marker>> items = [];
   GoogleMapController mapController;
@@ -81,9 +80,12 @@ class _MapsLocationViewState extends State<MapsLocationView> {
         val.docs.forEach((val) {
           listLocations.add(val.data()["name"]);
           userLocations.add(
-              UserLocations(val.id, val["name"], val["lat"], val["lon"], null));
+            UserLocations(val.id, val["name"], val["lat"], val["lon"], null)
+          );
           Position pos = Position(
-              latitude: val.data()["lat"], longitude: val.data()["lon"]);
+            latitude: val.data()["lat"],
+            longitude: val.data()["lon"]
+          );
           userPositions.add(pos);
         });
         listLocations.add('add_favorite'.tr);
@@ -113,7 +115,9 @@ class _MapsLocationViewState extends State<MapsLocationView> {
                         Text(
                           "Request location permission",
                           style: TextStyle(
-                              fontWeight: FontWeight.w800, fontSize: 20),
+                            fontWeight: FontWeight.w800,
+                            fontSize: 20
+                          ),
                         ),
                         SizedBox(height: 10),
                         Text(
@@ -214,14 +218,14 @@ class _MapsLocationViewState extends State<MapsLocationView> {
 
   void getGeoposiotions() {
     GeoFirePoint center = geo.point(
-        latitude: initialPosition.target.latitude,
-        longitude: initialPosition.target.longitude);
+      latitude: initialPosition.target.latitude,
+      longitude: initialPosition.target.longitude
+    );
     var collectionReference = _db;
 
-    geo
-        .collection(collectionRef: collectionReference)
-        .within(center: center, radius: 1000, field: "position")
-        .listen((list) {
+    geo.collection(collectionRef: collectionReference)
+    .within(center: center, radius: 1000, field: "position")
+    .listen((list) {
       setState(() {
         updateMarkers(list);
       });
@@ -229,15 +233,16 @@ class _MapsLocationViewState extends State<MapsLocationView> {
   }
 
   ClusterManager<Marker> initClusterManager() {
-    return ClusterManager<Marker>(items, _updateMarkers,
-        markerBuilder: _markerBuilder,
-        initialZoom: initialPosition.zoom,
-        stopClusteringZoom: 13);
+    return ClusterManager<Marker>(
+      items, _updateMarkers,
+      markerBuilder: _markerBuilder,
+      initialZoom: initialPosition.zoom,
+      stopClusteringZoom: 13
+    );
   }
 
   updateMarkers(List<DocumentSnapshot> documentList) async {
-    final Uint8List markerIcon =
-        await getBytesFromAsset('assets/snowball_logo.png', 70);
+    final Uint8List markerIcon = await getBytesFromAsset('assets/snowball_logo.png', 70);
     documentList.forEach((DocumentSnapshot document) {
       GeoPoint point = document['position']['geopoint'];
       MarkerId id = MarkerId(document.id);
@@ -249,14 +254,19 @@ class _MapsLocationViewState extends State<MapsLocationView> {
         },
         icon: BitmapDescriptor.fromBytes(markerIcon),
         infoWindow: InfoWindow(
-            title: document["nombre"],
-            snippet: document["ciudad"],
-            onTap: () {
-              senToDetails(document);
-            }),
+          title: document["nombre"],
+          snippet: document["ciudad"],
+          onTap: () {
+            senToDetails(document);
+          }
+        ),
       );
       items.add(
-          ClusterItem(LatLng(point.latitude, point.longitude), item: _marker));
+        ClusterItem(
+          LatLng(point.latitude, point.longitude),
+          item: _marker
+        )
+      );
     });
     setState(() {
       _manager = initClusterManager();
@@ -266,46 +276,47 @@ class _MapsLocationViewState extends State<MapsLocationView> {
 
   void _handlePressButton() async {
     await Navigator.push(
-        context, MaterialPageRoute(builder: (context) => ProfileAddLocation()));
+      context,
+      MaterialPageRoute(builder: (context) => ProfileAddLocation())
+    );
 
     listLocations.clear();
     _getListaPosition();
   }
 
-  Future<Marker> Function(Cluster<Marker>) get _markerBuilder =>
-      (cluster) async {
-        final String icono = cluster.isMultiple
-            ? 'assets/snowball_multiple.png'
-            : 'assets/snowball_logo.png';
-        final Uint8List markerIcon = await getBytesFromAsset(icono, 70);
+  Future<Marker> Function(Cluster<Marker>) get _markerBuilder => (cluster) async {
+    final String icono = cluster.isMultiple ? 'assets/snowball_multiple.png' : 'assets/snowball_logo.png';
+    final Uint8List markerIcon = await getBytesFromAsset(icono, 70);
 
-        return Marker(
-          markerId: MarkerId(cluster.getId()),
-          position: cluster.location,
-          infoWindow: cluster.items.first.infoWindow,
-          onTap: () async {
-            if (cluster.isMultiple) {
-              mapController.moveCamera(CameraUpdate.newCameraPosition(
-                  CameraPosition(target: cluster.location, zoom: 14)));
-              // mapController.moveCamera(CameraUpdate.zoomIn());
-              setState(() {});
-              // getSnowballSimilar(
-              //     cluster.items.first.markerId.value, cluster.location);
-            } else {
-              getSnowballSimilar(
-                  cluster.items.first.markerId.value, cluster.location);
-              // Get.to(
-              //     () => DetailSnowballView(cluster.items.first.markerId.value));
-            }
-          },
-          icon: BitmapDescriptor.fromBytes(markerIcon),
-        );
-      };
+    return Marker(
+      markerId: MarkerId(cluster.getId()),
+      position: cluster.location,
+      infoWindow: cluster.items.first.infoWindow,
+      onTap: () async {
+        if (cluster.isMultiple) {
+          mapController.moveCamera(
+            CameraUpdate.newCameraPosition(
+              CameraPosition(target: cluster.location, zoom: 14)
+            )
+          );
+          setState(() {});
+        } else {
+          getSnowballSimilar(
+            cluster.items.first.markerId.value,
+            cluster.location
+          );
+        }
+      },
+      icon: BitmapDescriptor.fromBytes(markerIcon),
+    );
+  };
 
   Future<Uint8List> getBytesFromAsset(String path, int width) async {
     ByteData data = await rootBundle.load(path);
-    Codec codec = await instantiateImageCodec(data.buffer.asUint8List(),
-        targetWidth: width);
+    Codec codec = await instantiateImageCodec(
+      data.buffer.asUint8List(),
+      targetWidth: width
+    );
     FrameInfo fi = await codec.getNextFrame();
     return (await fi.image.toByteData(format: ImageByteFormat.png))
         .buffer
@@ -313,11 +324,12 @@ class _MapsLocationViewState extends State<MapsLocationView> {
   }
 
   void getDataPositions() {
-    Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
-        .then((Position position) {
+    Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.best).then((Position position) {
       setState(() {
         initialPosition = CameraPosition(
-            target: LatLng(position.latitude, position.longitude), zoom: 12);
+          target: LatLng(position.latitude, position.longitude),
+          zoom: 12
+        );
       });
       getGeoposiotions();
       updateCamera();
@@ -325,21 +337,23 @@ class _MapsLocationViewState extends State<MapsLocationView> {
       print(e);
     });
 
-    Geolocator.getLastKnownPosition(forceAndroidLocationManager: true)
-        .then((Position position) {
-      setState(() {
-        initialPosition = CameraPosition(
-            target: LatLng(position.latitude, position.longitude), zoom: 12);
-      });
-      getGeoposiotions();
-      updateCamera();
-    });
+    Geolocator.getLastKnownPosition(forceAndroidLocationManager: true).then(
+      (Position position) {
+        setState(() {
+          initialPosition = CameraPosition(
+            target: LatLng(position.latitude, position.longitude),
+            zoom: 12
+          );
+        });
+        getGeoposiotions();
+        updateCamera();
+      }
+    );
   }
 
   Future<void> updateCamera() async {
     if (mapController != null) {
-      await mapController
-          .animateCamera(CameraUpdate.newCameraPosition(initialPosition));
+      await mapController.animateCamera(CameraUpdate.newCameraPosition(initialPosition));
       setState(() {
         onMapCreatedFunc(mapController);
       });
@@ -364,11 +378,12 @@ class _MapsLocationViewState extends State<MapsLocationView> {
   }
 
   _changePosition(String pos) {
-    UserLocations find =
-        userLocations.where((item) => pos.contains(item.name)).first;
+    UserLocations find = userLocations.where((item) => pos.contains(item.name)).first;
     setState(() {
       initialPosition = CameraPosition(
-          target: LatLng(find.latitude, find.longitude), zoom: 12);
+        target: LatLng(find.latitude, find.longitude),
+        zoom: 12
+      );
       updateCamera();
       getGeoposiotions();
     });
@@ -379,55 +394,50 @@ class _MapsLocationViewState extends State<MapsLocationView> {
   }
 
   getSnowballSimilar(String id, LatLng location) {
-    GeoFirePoint center =
-        geo.point(latitude: location.latitude, longitude: location.longitude);
+    GeoFirePoint center = geo.point(latitude: location.latitude, longitude: location.longitude);
     var collectionReference = _db;
-    geo
-        .collection(collectionRef: collectionReference)
-        .within(center: center, radius: 1, field: "position")
-        .listen((list) {
-      List<Snowball> snowLista =
-          list.map((e) => Snowball.fromSnapshot(e)).toList();
-      var lista = [];
+    geo.collection(collectionRef: collectionReference)
+    .within(center: center, radius: 1, field: "position")
+    .listen((list) {
+      List<Snowball> snowLista = list.map((e) => Snowball.fromSnapshot(e)).toList();
+      var similarSnowballsList = [];
       try {
         final curent = snowLista.where((element) => element.id == id).first;
-        lista = snowLista
-            .where((element) =>
-                element.position.latitude == curent.position.latitude &&
-                element.position.longitude == curent.position.longitude)
-            .toList();
-      } catch (a) {
-        print(a);
+        similarSnowballsList = snowLista.where((element) =>
+          element.position.latitude == curent.position.latitude &&
+          element.position.longitude == curent.position.longitude
+        ).toList();
+      } catch (e) {
+        print(e);
       }
 
-      if (lista.length > 1) {
+      if (similarSnowballsList.length > 1) {
         showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                scrollable: true,
-                title: Text('Snowballs'),
-                content: Container(
-                  height: Get.height * 0.6,
-                  width: 400.0,
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: list.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return ListTile(
-                        title: Text(list[index]["nombre"]),
-                        onTap: () {
-                          Get.back();
-                          Get.to(() => DetailSnowballView(list[index].id));
-                        },
-                      );
-                    },
-                  ),
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              scrollable: true,
+              title: Text('Snowballs'),
+              content: Container(
+                height: Get.height * 0.6,
+                width: 400.0,
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: list.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return ListTile(
+                      title: Text(list[index]["nombre"]),
+                      onTap: () {
+                        Get.back();
+                        Get.to(() => DetailSnowballView(list[index].id));
+                      },
+                    );
+                  },
                 ),
-              );
-            });
-      } else {
-        Get.to(() => DetailSnowballView(list[0].id));
+              ),
+            );
+          }
+        );
       }
     });
   }
