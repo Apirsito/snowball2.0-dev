@@ -423,13 +423,14 @@ class _MapsLocationViewState extends State<MapsLocationView> {
                 width: 400.0,
                 child: ListView.builder(
                   shrinkWrap: true,
-                  itemCount: list.length,
+                  itemCount: similarSnowballsList.length,
                   itemBuilder: (BuildContext context, int index) {
+                    final snowball = similarSnowballsList[index];
                     return ListTile(
-                      title: Text(list[index]["nombre"]),
+                      title: Text(snowball.nombre),
                       onTap: () {
                         Get.back();
-                        Get.to(() => DetailSnowballView(list[index].id));
+                        Get.to(() => DetailSnowballView(snowball.id));
                       },
                     );
                   },
